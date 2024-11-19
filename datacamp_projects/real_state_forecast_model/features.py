@@ -14,6 +14,12 @@ def col_ratio(df, col1, col2):
     
     return df
 
+def binary_cols(df):
+    df = df.withColumn('is_large_home', F.when((F.col("beds") > 4) & (F.col("baths") > 3), 1).otherwise(0))
+    df = df.withColumn("luxury_indicator", F.when((F.col("listPrice") > 1_000_000) & (F.col("m2") > 300), 1).otherwise(0))
+    
+    return df
+
 
 def prepare_df(real_state):
     ##Limpando o df
@@ -23,6 +29,8 @@ def prepare_df(real_state):
     
     ##Criando as features
     real_state = sqft_to_m2(real_state)
+    
+    real_state = binary_cols(real_state)
     
     real_state = col_ratio(real_state, 'baths', 'm2')
     real_state = col_ratio(real_state, 'baths', 'beds')

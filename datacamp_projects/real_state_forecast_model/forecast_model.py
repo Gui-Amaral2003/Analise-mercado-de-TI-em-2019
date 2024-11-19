@@ -17,7 +17,9 @@ assembler = VectorAssembler(inputCols=['year_built',
                                        'beds', 
                                        'baths', 
                                        'garage', 
-                                       'm2', 
+                                       'm2',
+                                       'is_large_home',
+                                       'luxury_indicator',
                                        'baths_to_m2', 
                                        'baths_to_beds', 
                                        'baths_to_stories', 
@@ -39,8 +41,8 @@ train_data, test_data = real_state_transformed.randomSplit([0.75, 0.25], seed = 
 regression = LinearRegression(featuresCol='scaled_features', labelCol='listPrice')
 
 grid = (ParamGridBuilder()
-             .addGrid(regression.regParam, [0.01, 0.1, 1.0])  # Regularização L2 (Ridge Regression)
-             .addGrid(regression.elasticNetParam, [0.0, 0.5, 1.0])  # ElasticNet: 0.0 = L2, 1.0 = L1 (Lasso)
+             .addGrid(regression.regParam, [0.01, 0.1, 1.0])  
+             .addGrid(regression.elasticNetParam, [0.0, 0.5, 1.0])  
              .build())
 
 evaluator = RegressionEvaluator(labelCol='listPrice', predictionCol='prediction', metricName='rmse')
