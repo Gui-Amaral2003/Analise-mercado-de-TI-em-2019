@@ -22,5 +22,5 @@ def fillna(df, cols):
 
 def removing_lines(df):
     df = df.filter(df['stories'] != 119)
-    
+    df = df.filter(df['garage'] != 400)
     return df
